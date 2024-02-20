@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Picture Trivia!</title>
+    <link rel = "stylesheet" href="style.css">
+    <!-- link:css -->
+
+</head>
+<body>
+
+    <h1> Click the correct answers. </h1>
+    <div class = "question"> 
+
+        <h2> Guess the logo </h2>
+        <img src="media/chevrolet.jpg" alt="Logo" style="max-width: 100%; height: auto;">
+        <button>Subaru</button>
+        <button class="correct">Chevrolet</button>
+        <button>Chrysler</button>
+        <button>Dodge</button>
+    </div>
+
+    <div class = "question"> 
+
+        <h2> Name the animal </h2>
+        <img src="media/frog.jpeg" alt="Animal" style="max-width: 100%; height: auto;">
+        <button class="correct">Poison Dart Frog</button>
+        <button>Northern Leopard Frog</button>
+        <button>Pickerel Frog</button>
+        <button>Cope's Gray Tree Frog</button>
+
+    </div>
+
+    <div class = "question"> 
+
+        <h2> Name the Caribbean country </h2>
+        <img src="media/trinidad.jpg" alt="Flag" style="max-width: 100%; height: auto;">
+        <button>Barbados</button>
+        <button>Dominica</button>
+        <button>St. Kitts and Nevis</button>
+        <button class="correct">Trinidad & Tobago</button>
+    </div>
+
+    <div class = "question"> 
+
+        <h2> What is the name of this Guatemalan dish? </h2>
+        <img src="media/guat.jpeg" alt="Dish" style="max-width: 100%; height: auto;">
+        <button>Paches</button>
+        <button>Tamales Colorados</button>
+        <button class="correct">Jocón</button>
+        <button>Caldo de Gallina</button>
+    </div>
+
+    <div class = "question"> 
+
+        <h2> Who won the Super Bowl 1998? </h2>
+        <img src="media/bronco.jpeg" alt="NFL" style="max-width: 100%; height: auto;">
+        <button class="correct">Denver Broncos</button>
+        <button>Pittsburgh Steelers</button>
+        <button>Baltimore Ravens</button>
+        <button>Tennessee Titans</button>
+    </div>
+
+    <div class = "question"> 
+
+        <h2> Who is the owner of Taco Bell? </h2>
+        <img src="media/glen.jpeg" alt="Bell" style="max-width: 100%; height: auto;">
+        <button>Tom Bell</button>
+        <button class="correct">Glen Bell</button>
+        <button>Ryan Bell</button>
+        <button>Landon Bell</button>
+    </div>
+
+    <div class = "question"> 
+
+        <h2> Name the country </h2>
+        <img src="media/cuba.jpeg" alt="Country_outline" style="max-width: 100%; height: auto;">
+        <button>Colombia</button>
+        <button>Ecuador</button>
+        <button>Monaco</button>
+        <button class="correct">Cuba</button>
+    </div>
+
+    <div class = "question"> 
+
+        <h2> Name the U.S. State </h2>
+        <img src="media/iowa outline.jpeg" alt="State" style="max-width: 100%; height: auto;">
+        <button>Colorado</button>
+        <button>Missouri</button>
+        <button class="correct">Iowa</button>
+        <button>Montana</button>
+    </div>
+
+    <div class = "question"> 
+
+        <h2> What state is this famous landmark located in? </h2>
+        <img src="media/hoover dam.jpeg" alt="landmark" style="max-width: 100%; height: auto;">
+        <button class="correct">Nevada</button>
+        <button>New Mexico</button>
+        <button>Arizona</button>
+        <button>California</button>
+    </div>
+
+    <div class = "question"> 
+
+        <h2> Name this celebrity </h2>
+        <img src="media/natalie.jpeg" alt="Celebrity" style="max-width: 100%; height: auto;">
+        <button>Keira Knightley</button>
+        <button>Daisy Ridley</button>
+        <button>Charlize Theron</button>
+        <button class="correct">Natalie Portman</button>
+    </div>
+
+    <div class="score" style="margin-top: 20px;">Score: <span class="score-val">0</span></div>
+
+    <button class="restart" style="display: none;">Restart</button>
+    
+
+    <script>
+        document.addEventListener('DOMContentLoaded', (event) => {
+            let currentQuestionIndex = 0;
+            const questions = document.querySelectorAll('.question');
+            const scoreElement = document.querySelector(".score-val");
+            const restartButton = document.querySelector(".restart");
+            let score = 0
+
+            // Initially hide all questions except the first one
+            questions.forEach((question, index) => {
+                if(index !== 0) question.style.display = 'none';
+            });
+        
+            // Function to show the next question with delay
+            function showNextQuestion() {
+
+                setTimeout(() => {
+                    if(currentQuestionIndex < questions.length - 1) {
+                        questions[currentQuestionIndex].style.display = 'none';
+                        currentQuestionIndex++;
+                        questions[currentQuestionIndex].style.display = 'block';
+                    } 
+                    else{
+                        restartButton.style.display = 'block';
+                    }
+                }, 1000); // Delay of 1000 milliseconds (1 second)
+            }
+
+            function restartQuiz() {
+                currentQuestionIndex = 0;
+                score = 0;
+                scoreElement.innerText = score;
+                questions.forEach((question, index) => {
+                    if(index !== 0) question.style.display = 'none';
+                });
+                questions[0].style.display = 'block';
+                // Reset classes that indicate correct or incorrect answers
+                questions.forEach(question => {
+                    question.querySelectorAll('button').forEach(btn => {
+                        btn.classList.remove('correct-answer', 'incorrect-answer');
+                        btn.disabled = false; // Enable all buttons
+                    });
+                });
+                restartButton.style.display = 'none';
+            }
+        
+        
+            // Add click event listener to all buttons
+            document.querySelectorAll('.question button').forEach(button => {
+                button.addEventListener('click', function() {
+                    //select my score element 
+                    let scoreElement = document.querySelector(".score-val")
+                    
+                    let isCorrect = this.classList.contains('correct');
+
+                    if (isCorrect){
+                        score ++;
+                    }
+                    scoreElement.innerText = score;
+
+                    this.classList.add(isCorrect ? 'correct-answer' : 'incorrect-answer');
+                    
+                    // Disable all buttons in the current question to prevent multiple answers
+                    questions[currentQuestionIndex].querySelectorAll('button').forEach(btn => btn.disabled = true);
+                    showNextQuestion();
+                });
+            });
+            restartButton.addEventListener('click', restartQuiz);
+        });
+        </script>
+        
+        
+</body>
+</html>
